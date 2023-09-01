@@ -1,0 +1,31 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000 --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start --port 3000 --hostname 0.0.0.0",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^13.4.9",
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "react-spinners": "^0.13.8",
+    "weaviate-ts-client": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.6",
+    "@types/react-modal": "^3.16.0",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.44.0",
+    "eslint-config-next": "^13.4.9",
+    "postcss": "^8.4.28",
+    "react-modal": "^3.16.1",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.1.6"
+  }
+}
