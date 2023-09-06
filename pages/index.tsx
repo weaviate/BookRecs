@@ -70,7 +70,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="h-screen flex flex-col justify-between bg-gray-100">
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -127,7 +127,7 @@ export default function Home() {
 
         </div>
       </Modal>
-      <div className="bg-gray-100 py-10 px-4">
+      <div className="mb-auto py-10 px-4 bg-gray-100">
         <div className="container mx-auto">
           <h1 className="text-3xl font-black font-bold mb-6 text-center">
             Book Recommendations
@@ -195,7 +195,7 @@ export default function Home() {
                           return (
                             <div key={book.isbn10 || book.isbn13} className="w-full md:w-1/3 px-2 mb-4 animate-pop-in">
                               <div className="bg-white p-6 flex items-center flex-col">
-                                <h3 className="text-xl font-semibold mb-4">{book.title}</h3>
+                                <h3 className="text-xl font-semibold mb-4 line-clamp-1">{book.title}</h3>
                                 <div className='w-48 h-72'>
                                   <img
                                     src={book.thumbnail}
@@ -203,7 +203,7 @@ export default function Home() {
                                     className="w-full h-full rounded-lg shadow-lg"
                                   />
                                 </div>
-                                <p className="mt-4 text-gray-500">{book.authors}</p>
+                                <p className="mt-4 text-gray-500 line-clamp-1">{book.authors}</p>
                                 <div className='flex'>
                                   <div className='bg-indigo-400 text-white p-3  rounded mt-4 cursor-pointer' onClick={() => { openModal(book.title) }}>Learn more</div>
                                 </div>
@@ -227,9 +227,9 @@ export default function Home() {
 
       </div>
 
-      <div className="justify-center items-center bg-gray-600 text-white h-10 flex">
-        Made with ❤️ by &nbsp;<a href="https://x.com/aj__chan/" target="_blank" className="underline text-blue-200">@aj__chan</a>. Powered by &nbsp;<a target="_blank" href="https://weaviate.io/" className="underline text-blue-200">Weaviate</a>.
-      </div>
-    </>
+      <footer className="justify-center items-center bg-gray-600 text-white h-10 flex">
+        Made with ❤️ by &nbsp;<a href="https://x.com/aj__chan/" target="_blank" className="underline text-blue-200">@aj__chan</a> &nbsp; and built with &nbsp;<a target="_blank" href="https://weaviate.io/" className="underline text-blue-200">Weaviate</a>.
+      </footer>
+    </div>
   );
 }

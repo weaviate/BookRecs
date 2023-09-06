@@ -12,15 +12,17 @@ export default async function handler(
     const { method } = req;
     let { query } = req.body;
 
+    const weaviateClusterUrl = process.env.WEAVIATE_CLUSTER_URL?.replace("https://", "")
+
     switch (method) {
 
       case 'POST': {
         const client: WeaviateClient = weaviate.client({
           scheme: 'https',
-          host: process.env.WEAVIATE_CLUSTER_URL || 'zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud',
+          host: weaviateClusterUrl || 'https://zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud',
           apiKey: new ApiKey(process.env.WEAVIATE_API_KEY || 'n6mdfI32xrXF3DH76i8Pwc2IajzLZop2igb6'), //READONLY API Key, ensure the environment variable is an Admin key to support writing
           headers: {
-            'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY!,
+            'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY!,
           },
         });
 
@@ -36,7 +38,7 @@ export default async function handler(
           .get()
           .withClassName('Book')
           .withFields(
-            'title isbn10 isbn13  categories thumbnail description num_pages average_rating published_year authors'
+            'title isbn10 isbn13 categories thumbnail description num_pages average_rating published_year authors'
           )
           .withNearText(nearText)
           .withLimit(20)

@@ -2,11 +2,18 @@ import os
 import csv
 import weaviate
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+WEAVIATE_CLUSTER_URL = os.getenv('WEAVIATE_CLUSTER_URL')
+WEAVIATE_API_KEY = os.getenv('WEAVIATE_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 client = weaviate.Client(
-    url=f"https://{os.environ.get('WEAVIATE_CLUSTER_URL')}",
-    auth_client_secret=weaviate.AuthApiKey(api_key=os.environ.get(
-        "WEAVIATE_API_KEY")),  # Replace w/ your Weaviate instance API key
-    additional_headers={"X-OpenAI-Api-Key": os.environ.get("OPENAI_APIKEY")})
+    url=WEAVIATE_CLUSTER_URL,
+    auth_client_secret=weaviate.AuthApiKey(api_key=WEAVIATE_API_KEY), 
+    additional_headers={"X-OpenAI-Api-Key": OPENAI_API_KEY})
 
 client.schema.delete_class("Book")
 
@@ -24,7 +31,7 @@ class_obj = {
 
 client.schema.create_class(class_obj)
 # client.batch.configure(batch_size=100)  # Configure batch
-f = open("./data-workflow/7k-books-kaggle.csv", "r")
+f = open("./data-pipeline/7k-books-kaggle.csv", "r")
 current_book = None
 try:
   with client.batch as batch:  # Initialize a batch process
