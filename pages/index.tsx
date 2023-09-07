@@ -2,6 +2,17 @@ import { SyntheticEvent, useState } from 'react';
 import CircleLoader from 'react-spinners/CircleLoader';
 import Modal from 'react-modal';
 import { Book } from 'types';
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 const customStyles = {
   content: {
     top: '50%',
@@ -41,7 +52,7 @@ export default function Home() {
 
     // Check Inputs
     if (query === '') {
-      alert("Please let us know what you'd like to learn!.");
+      alert("Please let us know what you'd like to learn!");
       return;
     }
 
@@ -71,6 +82,7 @@ export default function Home() {
 
   return (
     <div className="h-screen flex flex-col justify-between bg-gray-100">
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -145,26 +157,22 @@ export default function Home() {
               >
                 What would you like to get a book recommendation on?
               </label>
-              <input
+              <Input 
                 type="text"
                 id="favorite-books"
                 name="favorite-books"
                 placeholder="I'd like to learn..."
-                className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);
                 }}
               />
             </div>
-
-            <button
-              disabled={isLoading}
-              type="submit"
-              className="w-full px-3 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none"
-            >
+            <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 " disabled={isLoading} type="submit" variant="outline">
               Get Recommendations
-            </button>
+            </Button>
+
           </form>
 
           {isLoading ? (
@@ -205,7 +213,9 @@ export default function Home() {
                                 </div>
                                 <p className="mt-4 text-gray-500 line-clamp-1">{book.authors}</p>
                                 <div className='flex'>
-                                  <div className='bg-indigo-400 text-white p-3  rounded mt-4 cursor-pointer' onClick={() => { openModal(book.title) }}>Learn more</div>
+                                  <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800" type="submit" variant="outline" onClick={() => { openModal(book.title) }}>
+                                    Learn More
+                                  </Button>
                                 </div>
                               </div>
                             </div>

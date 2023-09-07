@@ -30,7 +30,7 @@ class_obj = {
 }
 
 client.schema.create_class(class_obj)
-# client.batch.configure(batch_size=100)  # Configure batch
+
 f = open("./data-pipeline/7k-books-kaggle.csv", "r")
 current_book = None
 try:
