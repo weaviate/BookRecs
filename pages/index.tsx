@@ -4,14 +4,6 @@ import Modal from 'react-modal';
 import { Book } from 'types';
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 
 const customStyles = {
   content: {
