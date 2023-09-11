@@ -16,7 +16,7 @@
     "incremental": true,
     "paths": {
       "types": ["./types.ts"],
-      "@components/*": ["./components/*"],
+      "@/*": ["./*"]
 
     }
   },

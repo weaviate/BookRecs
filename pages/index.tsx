@@ -2,7 +2,7 @@ import { SyntheticEvent, useState } from 'react';
 import CircleLoader from 'react-spinners/CircleLoader';
 import Modal from 'react-modal';
 import { Book } from 'types';
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const customStyles = {
@@ -85,12 +85,12 @@ export default function Home() {
           <h3 className="mt-2 text-lg font-semibold text-gray-700">
             {selectedBook?.title}
           </h3>
-          <button
-            className="hover:font-bold rounded bg-gray-200 p-2 w-20"
+          <Button
+            className="hover:font-bold rounded hover:bg-gray-700 p-2 w-20 hover:text-white "
             onClick={closeModal}
           >
             Close
-          </button>
+          </Button>
         </div>
         <div>
           <div className='flex justify-center py-10'>
@@ -161,7 +161,7 @@ export default function Home() {
                 }}
               />
             </div>
-            <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 " disabled={isLoading} type="submit" variant="outline">
+            <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 hover:text-white" disabled={isLoading} type="submit" variant="outline">
               Get Recommendations
             </Button>
 
@@ -170,7 +170,7 @@ export default function Home() {
           {isLoading ? (
             <div className="w-full flex justify-center h-60 pt-10">
               <CircleLoader
-                color={'#2563eb'}
+                color={'#000000'}
                 loading={isLoading}
                 size={100}
                 aria-label="Loading"
@@ -205,7 +205,7 @@ export default function Home() {
                                 </div>
                                 <p className="mt-4 text-gray-500 line-clamp-1">{book.authors}</p>
                                 <div className='flex'>
-                                  <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800" type="submit" variant="outline" onClick={() => { openModal(book.title) }}>
+                                  <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 hover:text-white" type="submit" variant="outline" onClick={() => { openModal(book.title) }}>
                                     Learn More
                                   </Button>
                                 </div>
