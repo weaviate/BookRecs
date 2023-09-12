@@ -19,7 +19,7 @@ export default async function handler(
       case 'POST': {
         const client: WeaviateClient = weaviate.client({
           scheme: 'https',
-          host: weaviateClusterUrl || 'https://zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud',
+          host: weaviateClusterUrl || 'zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud',
           apiKey: new ApiKey(process.env.WEAVIATE_API_KEY || 'n6mdfI32xrXF3DH76i8Pwc2IajzLZop2igb6'), //READONLY API Key, ensure the environment variable is an Admin key to support writing
           headers: {
             'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY!,
