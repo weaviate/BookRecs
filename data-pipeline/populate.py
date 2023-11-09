@@ -9,11 +9,12 @@ load_dotenv()
 WEAVIATE_CLUSTER_URL = os.getenv('WEAVIATE_CLUSTER_URL')
 WEAVIATE_API_KEY = os.getenv('WEAVIATE_API_KEY')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+COHERE_API_KEY = os.getenv('COHERE_API_KEY')
 
 client = weaviate.Client(
     url=WEAVIATE_CLUSTER_URL,
     auth_client_secret=weaviate.AuthApiKey(api_key=WEAVIATE_API_KEY), 
-    additional_headers={"X-OpenAI-Api-Key": OPENAI_API_KEY})
+    additional_headers={"X-OpenAI-Api-Key": OPENAI_API_KEY, "X-Cohere-Api-Key": COHERE_API_KEY})
 
 client.schema.delete_class("Book")
 
@@ -25,6 +26,9 @@ class_obj = {
             "model": "ada",
             "modelVersion": "002",
             "type": "text"
+        },
+        "generative-cohere": {
+
         }
     }
 }

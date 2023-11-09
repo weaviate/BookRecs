@@ -143,7 +143,7 @@ export default function Home() {
             onSubmit={getRecommendations}
           >
             <div className="mb-4">
-              <label
+            <label
                 htmlFor="favorite-books"
                 className="block text-gray-700 font-bold mb-2"
               >
@@ -154,6 +154,23 @@ export default function Home() {
                 id="favorite-books"
                 name="favorite-books"
                 placeholder="I'd like to learn..."
+                className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+              <label
+                htmlFor="interests-input"
+                className="block text-gray-700 font-bold mb-2 pt-4"
+              >
+                Your interests and hobbies
+              </label>
+              <Input 
+                type="text"
+                id="interests-input"
+                name="interests"
+                placeholder="Tell us about your hobbies and interests, comma separated..."
                 className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
                 value={query}
                 onChange={(e) => {
