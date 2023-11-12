@@ -246,8 +246,11 @@ export default function Home() {
 
       </div>
 
-      <footer className="justify-center items-center bg-gray-600 text-white h-10 flex">
-        Made with ❤️ by &nbsp;<a href="https://x.com/aj__chan/" target="_blank" className="underline text-blue-200">@aj__chan</a> &nbsp; and built with &nbsp;<a target="_blank" href="https://weaviate.io/" className="underline text-blue-200">Weaviate</a>.
+      <footer className="justify-center items-center bg-gray-600 text-white h-20 flex flex-col">
+        <div>
+        Deploy it on &nbsp;<a href="https://vercel.com/templates/next.js/weaviate-bookrecs" className="underline text-blue-200">Vercel</a> and checkout the code on <a href="https://github.com/weaviate/BookRecs/" className="underline text-blue-200">Github</a>.</div>
+        <div>
+        Made with ❤️ by &nbsp;<a href="https://x.com/aj__chan/" target="_blank" className="underline text-blue-200">@aj__chan</a> &nbsp; and built with &nbsp;<a target="_blank" href="https://weaviate.io/" className="underline text-blue-200">Weaviate</a>.</div>
       </footer>
     </div>
   );
