@@ -5,6 +5,12 @@ import { Book } from 'types';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 const customStyles = {
   content: {
     top: '50%',
@@ -22,6 +28,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadedOnce, setLoadedOnce] = useState(false);
   const [query, setQuery] = useState('');
+  const [userInterests, setUserInterests] = useState('');
   const [recommendedBooks, setRecommendedBooks] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedBook, setSelectedbook] = useState<Book | undefined>(undefined);
@@ -57,6 +64,7 @@ export default function Home() {
       },
       body: JSON.stringify({
         query,
+        userInterests,
       })
     })
       .then((res) => {
@@ -160,23 +168,23 @@ export default function Home() {
                   setQuery(e.target.value);
                 }}
               />
-              <label
-                htmlFor="interests-input"
-                className="block text-gray-700 font-bold mb-2 pt-4"
-              >
-                Your interests and hobbies
-              </label>
-              <Input 
-                type="text"
-                id="interests-input"
-                name="interests"
-                placeholder="Tell us about your hobbies and interests, comma separated..."
-                className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                }}
-              />
+                <label
+                  htmlFor="interests-input"
+                  className="block text-gray-700 font-bold mb-2 pt-4"
+                >
+                  Your interests and hobbies
+                </label>
+                <Input 
+                  type="text"
+                  id="interests-input"
+                  name="interests"
+                  placeholder="Tell us about your hobbies and interests, comma separated..."
+                  className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
+                  value={userInterests}
+                  onChange={(e) => {
+                    setUserInterests(e.target.value);
+                  }}
+                />
             </div>
             <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 hover:text-white" disabled={isLoading} type="submit" variant="outline">
               Get Recommendations
@@ -212,7 +220,20 @@ export default function Home() {
                           return (
                             <div key={book.isbn10 || book.isbn13} className="w-full md:w-1/3 px-2 mb-4 animate-pop-in">
                               <div className="bg-white p-6 flex items-center flex-col">
-                                <h3 className="text-xl font-semibold mb-4 line-clamp-1">{book.title}</h3>
+                                <div className='flex justify-between w-full'>
+                                  <h3 className="text-xl font-semibold mb-4 line-clamp-1">{book.title}</h3>
+                                  {book._additional.generate.error == "connection to Cohere API failed with status: 429" ? 
+                                  <></>
+                                  : <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger><div className='rounded-full p-2 bg-black cursor-pointer w-10 h-10'>✨</div></TooltipTrigger>
+                                    <TooltipContent className='bg-sky-200 h-40 flex-wrap'>
+                                      <p>{book._additional.generate.singleResult}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>}
+                                  
+                                </div>
                                 <div className='w-48 h-72'>
                                   <img
                                     src={book.thumbnail}

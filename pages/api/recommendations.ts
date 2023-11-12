@@ -10,7 +10,9 @@ export default async function handler(
 ) {
   try {
     const { method } = req;
-    let { query } = req.body;
+    let { query, userInterests } = req.body;
+    console.log("Check out the user interest here!")
+    console.log(userInterests)
 
     const weaviateClusterUrl = process.env.WEAVIATE_CLUSTER_URL?.replace("https://", "")
 
@@ -23,6 +25,7 @@ export default async function handler(
           apiKey: new ApiKey(process.env.WEAVIATE_API_KEY || 'n6mdfI32xrXF3DH76i8Pwc2IajzLZop2igb6'), //READONLY API Key, ensure the environment variable is an Admin key to support writing
           headers: {
             'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY!,
+            "X-Cohere-Api-Key": process.env.COHERE_API_KEY!
           },
         });
 
@@ -34,6 +37,10 @@ export default async function handler(
 
         nearText.concepts = query;
 
+        let generatePrompt = "Explain why this book might be interesting to someone who has interests or hobbies in " + userInterests + ". the book's title is {title}, with a description: {description}, and is in the genre: {categories}.";
+
+        console.log(generatePrompt);
+
         const recData = await client.graphql
           .get()
           .withClassName('Book')
@@ -41,6 +48,9 @@ export default async function handler(
             'title isbn10 isbn13 categories thumbnail description num_pages average_rating published_year authors'
           )
           .withNearText(nearText)
+          .withGenerate({
+            singlePrompt: generatePrompt,
+          })
           .withLimit(20)
           .do();
 
