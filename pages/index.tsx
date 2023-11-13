@@ -4,13 +4,12 @@ import Modal from 'react-modal';
 import { Book } from 'types';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
 const customStyles = {
   content: {
     top: '50%',
@@ -168,23 +167,28 @@ export default function Home() {
                   setQuery(e.target.value);
                 }}
               />
-                <label
-                  htmlFor="interests-input"
-                  className="block text-gray-700 font-bold mb-2 pt-4"
-                >
-                  Your interests and hobbies
-                </label>
-                <Input 
-                  type="text"
-                  id="interests-input"
-                  name="interests"
-                  placeholder="Tell us about your hobbies and interests, comma separated..."
-                  className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
-                  value={userInterests}
-                  onChange={(e) => {
-                    setUserInterests(e.target.value);
-                  }}
-                />
+              {process.env.NEXT_PUBLIC_COHERE_CONFIGURED && (
+                <>
+                  <label
+                    htmlFor="interests-input"
+                    className="block text-gray-700 font-bold mb-2 pt-4"
+                  >
+                    Your interests and hobbies
+                  </label>
+                  <Input 
+                    type="text"
+                    id="interests-input"
+                    name="interests"
+                    placeholder="Tell us about your hobbies and interests, comma separated..."
+                    className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
+                    value={userInterests}
+                    onChange={(e) => {
+                      setUserInterests(e.target.value);
+                    }}
+                  />
+                </>
+              )}
+
             </div>
             <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 hover:text-white" disabled={isLoading} type="submit" variant="outline">
               Get Recommendations
@@ -222,16 +226,20 @@ export default function Home() {
                               <div className="bg-white p-6 flex items-center flex-col">
                                 <div className='flex justify-between w-full'>
                                   <h3 className="text-xl font-semibold mb-4 line-clamp-1">{book.title}</h3>
-                                  {book._additional.generate.error == "connection to Cohere API failed with status: 429" ? 
-                                  <></>
-                                  : <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger><div className='rounded-full p-2 bg-black cursor-pointer w-10 h-10'>✨</div></TooltipTrigger>
-                                    <TooltipContent className='bg-sky-200 h-40 flex-wrap'>
-                                      <p>{book._additional.generate.singleResult}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>}
+                                  {process.env.NEXT_PUBLIC_COHERE_CONFIGURED && book._additional.generate.error != "connection to Cohere API failed with status: 429" && (
+                                      <Popover>
+                                        <PopoverTrigger asChild>
+                                          <Button className='rounded-full p-2 bg-black cursor-pointer w-10 h-10'>✨</Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 h-80 overflow-auto">
+                                          <div>
+                                            <p className='text-2xl font-bold'>Why you&apos;ll like this book:</p>
+                                            <br/>
+                                            <p>{book._additional.generate.singleResult}</p>
+                                          </div>
+                                        </PopoverContent>
+                                      </Popover>
+                                    )}
                                   
                                 </div>
                                 <div className='w-48 h-72'>
