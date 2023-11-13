@@ -11,8 +11,6 @@ export default async function handler(
   try {
     const { method } = req;
     let { query, userInterests } = req.body;
-    console.log("Check out the user interest here!")
-    console.log(userInterests)
 
     const weaviateClusterUrl = process.env.WEAVIATE_CLUSTER_URL?.replace("https://", "")
 
@@ -46,8 +44,6 @@ export default async function handler(
         nearText.concepts = query;
 
         let generatePrompt = "Briefly describe why this book might be interesting to someone who has interests or hobbies in " + userInterests + ". the book's title is {title}, with a description: {description}, and is in the genre: {categories}. Don't make up anything that wasn't given in this prompt and don't ask how you can help.";
-
-        console.log(generatePrompt);
 
         let recDataBuilder = client.graphql
           .get()
