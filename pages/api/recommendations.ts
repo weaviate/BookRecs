@@ -10,20 +10,29 @@ export default async function handler(
 ) {
   try {
     const { method } = req;
-    let { query } = req.body;
+    let { query, userInterests } = req.body;
 
     const weaviateClusterUrl = process.env.WEAVIATE_CLUSTER_URL?.replace("https://", "")
 
     switch (method) {
 
       case 'POST': {
+
+        let headers: { [key: string]: string } = {};
+
+        if (process.env.OPENAI_API_KEY) {
+            headers['X-OpenAI-Api-Key'] = process.env.OPENAI_API_KEY;
+        }
+        
+        if (process.env.COHERE_API_KEY) {
+            headers['X-Cohere-Api-Key'] = process.env.COHERE_API_KEY;
+        }
+        
         const client: WeaviateClient = weaviate.client({
           scheme: 'https',
           host: weaviateClusterUrl || 'zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud',
           apiKey: new ApiKey(process.env.WEAVIATE_API_KEY || 'n6mdfI32xrXF3DH76i8Pwc2IajzLZop2igb6'), //READONLY API Key, ensure the environment variable is an Admin key to support writing
-          headers: {
-            'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY!,
-          },
+          headers: headers,
         });
 
         let nearText: NearTextType = {
@@ -34,15 +43,24 @@ export default async function handler(
 
         nearText.concepts = query;
 
-        const recData = await client.graphql
+        let generatePrompt = "Briefly describe why this book might be interesting to someone who has interests or hobbies in " + userInterests + ". the book's title is {title}, with a description: {description}, and is in the genre: {categories}. Don't make up anything that wasn't given in this prompt and don't ask how you can help.";
+
+        let recDataBuilder = client.graphql
           .get()
           .withClassName('Book')
           .withFields(
             'title isbn10 isbn13 categories thumbnail description num_pages average_rating published_year authors'
           )
           .withNearText(nearText)
-          .withLimit(20)
-          .do();
+          .withLimit(20);
+        
+        if (headers['X-Cohere-Api-Key']) {
+          recDataBuilder = recDataBuilder.withGenerate({
+            singlePrompt: generatePrompt,
+          });
+        }
+        
+      const recData = await recDataBuilder.do();
 
         res.status(200).json(recData);
         break;

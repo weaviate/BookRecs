@@ -4,6 +4,11 @@ import Modal from 'react-modal';
 import { Book } from 'types';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 const customStyles = {
   content: {
@@ -22,6 +27,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadedOnce, setLoadedOnce] = useState(false);
   const [query, setQuery] = useState('');
+  const [userInterests, setUserInterests] = useState('');
   const [recommendedBooks, setRecommendedBooks] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedBook, setSelectedbook] = useState<Book | undefined>(undefined);
@@ -57,6 +63,7 @@ export default function Home() {
       },
       body: JSON.stringify({
         query,
+        userInterests,
       })
     })
       .then((res) => {
@@ -143,7 +150,7 @@ export default function Home() {
             onSubmit={getRecommendations}
           >
             <div className="mb-4">
-              <label
+            <label
                 htmlFor="favorite-books"
                 className="block text-gray-700 font-bold mb-2"
               >
@@ -160,6 +167,28 @@ export default function Home() {
                   setQuery(e.target.value);
                 }}
               />
+              {process.env.NEXT_PUBLIC_COHERE_CONFIGURED && (
+                <>
+                  <label
+                    htmlFor="interests-input"
+                    className="block text-gray-700 font-bold mb-2 pt-4"
+                  >
+                    Your interests and hobbies
+                  </label>
+                  <Input 
+                    type="text"
+                    id="interests-input"
+                    name="interests"
+                    placeholder="Tell us about your hobbies and interests, comma separated..."
+                    className="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm "
+                    value={userInterests}
+                    onChange={(e) => {
+                      setUserInterests(e.target.value);
+                    }}
+                  />
+                </>
+              )}
+
             </div>
             <Button className="bg-black text-white w-full rounded-md hover:bg-gray-800 hover:text-white" disabled={isLoading} type="submit" variant="outline">
               Get Recommendations
@@ -195,7 +224,24 @@ export default function Home() {
                           return (
                             <div key={book.isbn10 || book.isbn13} className="w-full md:w-1/3 px-2 mb-4 animate-pop-in">
                               <div className="bg-white p-6 flex items-center flex-col">
-                                <h3 className="text-xl font-semibold mb-4 line-clamp-1">{book.title}</h3>
+                                <div className='flex justify-between w-full'>
+                                  <h3 className="text-xl font-semibold mb-4 line-clamp-1">{book.title}</h3>
+                                  {process.env.NEXT_PUBLIC_COHERE_CONFIGURED && book._additional.generate.error != "connection to Cohere API failed with status: 429" && (
+                                      <Popover>
+                                        <PopoverTrigger asChild>
+                                          <Button className='rounded-full p-2 bg-black cursor-pointer w-10 h-10'>✨</Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 h-80 overflow-auto">
+                                          <div>
+                                            <p className='text-2xl font-bold'>Why you&apos;ll like this book:</p>
+                                            <br/>
+                                            <p>{book._additional.generate.singleResult}</p>
+                                          </div>
+                                        </PopoverContent>
+                                      </Popover>
+                                    )}
+                                  
+                                </div>
                                 <div className='w-48 h-72'>
                                   <img
                                     src={book.thumbnail}

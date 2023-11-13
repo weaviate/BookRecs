@@ -64,6 +64,28 @@ To run the project locally, follow these steps:
 8. Try out BookRecs in a browser at http://localhost:3000
 
 
+## 🤝 Configuring Cohere Integration
+
+This project provides book recommendations using a vector database for semantic search. An additional feature is the integration with Cohere through the Weaviate Generative Search module, which provides explainations as to why a user might like a particular book recommendation.
+
+If you would like to enable this feature, you will need to configure the COHERE_API_KEY and NEXT_PUBLIC_COHERE_CONFIGURED environment variables.
+
+Steps
+1. Obtain a Cohere API key by signing up on the [Cohere website](https://cohere.com).
+2. Once you have your API key, open the .env file in the root directory of the project.
+3. Add the following line to the file, replacing 'INSERT_OPEN_API_KEY_HERE' with the API key you obtained from Cohere:
+```
+COHERE_API_KEY=INSERT_OPENAPI_KEY_HERE
+```
+4. To enable the Cohere integration, set the NEXT_PUBLIC_COHERE_CONFIGURED environment variable to "1". Add the following line to the .env file:
+```
+NEXT_PUBLIC_COHERE_CONFIGURED=1
+```
+5. Save the .env file and restart your development server. The Cohere integration should now be enabled.
+
+Please note that the COHERE_API_KEY should be kept secret and not exposed to the client-side of your application.
+
+
 ## 🧰 Usage
 
 To use the service, simply type in a genre and several book titles in the provided input fields. The system will then generate several book recommendations based on your inputs.
