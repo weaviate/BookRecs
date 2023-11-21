@@ -41,7 +41,7 @@ To run the project locally, follow these steps:
    ```
    cp env.example .env
    ```
-   `OPENAI_API_KEY` is required. If you don't choose not to create the Weaviate Cluster, remove `WEAVIATE_CLUSTER_URL` and `WEAVIATE_API_KEY` from the `.env`.
+   `OPENAI_API_KEY` is required. If you choose not to create a remote Weaviate Cluster, remove `WEAVIATE_CLUSTER_URL` and `WEAVIATE_API_KEY` from the `.env`.
 
 5. Set up a Python virtualenv to populate your vector database and to experiment with semantic search. 
    ```
