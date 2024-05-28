@@ -1,45 +1,22 @@
 import os
 import csv
 import weaviate
+import weaviate.classes as wvc
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
-WEAVIATE_CLUSTER_URL = os.getenv('WEAVIATE_CLUSTER_URL')
-WEAVIATE_API_KEY = os.getenv('WEAVIATE_API_KEY')
+WEAVIATE_CLUSTER_URL = os.getenv('WEAVIATE_CLUSTER_URL') or 'https://zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud'
+WEAVIATE_API_KEY = os.getenv('WEAVIATE_API_KEY') or 'n6mdfI32xrXF3DH76i8Pwc2IajzLZop2igb6'
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-COHERE_API_KEY = os.getenv('COHERE_API_KEY')
 
 client = weaviate.Client(
     url=WEAVIATE_CLUSTER_URL,
-    auth_client_secret=weaviate.AuthApiKey(api_key=WEAVIATE_API_KEY), 
-    additional_headers={"X-OpenAI-Api-Key": OPENAI_API_KEY, "X-Cohere-Api-Key": COHERE_API_KEY})
+    auth_client_secret=weaviate.AuthApiKey(api_key=WEAVIATE_API_KEY),
+    additional_headers={"X-OpenAI-Api-Key": OPENAI_API_KEY})
 
-client.schema.delete_class("Book")
-
-class_obj = {
-    "class": "Book",
-    "vectorizer": "text2vec-openai",
-    "moduleConfig": {
-        "text2vec-openai": {
-            "model": "ada",
-            "modelVersion": "002",
-            "type": "text"
-        },
-        "generative-cohere": {
-
-        }
-    }
-}
-
-client.schema.create_class(class_obj)
+book_collection = client.collections.get(name="Book")
 
 f = open("./data-pipeline/7k-books-kaggle.csv", "r")
 current_book = None
 try:
-  with client.batch as batch:  # Initialize a batch process
-    batch.batch_size = 100
     reader = csv.reader(f)
     # Iterate through each row of data
     for book in reader:
@@ -72,9 +49,11 @@ try:
           "ratings_count": book[11],
       }
 
-      batch.add_data_object(data_object=properties, class_name="Book")
-      # print(f"{book[2]}: {uuid}", end='\n')
+      uuid = book_collection.data.insert(properties)      
+
+      print(f"{book[2]}: {uuid}", end='\n')
 except Exception as e:
-  print(f"something happened {e}. Failure at {current_book}")
+  print(f"Exception: {e}.")
 
 f.close()
+client.close()

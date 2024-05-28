@@ -23,45 +23,49 @@ This project is a book recommendation service that suggests books based on a use
 - Vector Search on Weaviate Vector database of 7000 books
 - Jupyter Notebook workflow to access and store vector embeddings in Weaviate
 - Responsive design, thanks to TailwindCSS
+- Uses Ollama or OpenAI for vector generation and inference.
 
 ## 🛠 Installation
 
 To run the project locally, follow these steps:
 
-1. Clone the repository
+Clone the repository
    ```
    git clone https://github.com/weaviate/BookRecs.git
    ```
 
-2. Optionally, create a Weaviate Cluster using the [Weaviate Console](https://console.weaviate.cloud/) and make note of the cluster URL and the API Key. The project is already configured to read from an existing Weaviate Cluster. If you choose not to create a new Weaviate Cluster, you can rely on the default cluster we've already created for you. It's configured in both the NextJS app and the Python data pipeline. 
+### The Data Pipeline
 
-3. Create a OpenAI account and create API Key.
+The data pipeline shows you how to connect with Weaviate, generate embeddings using integrated modules with Weaviate through OpenAI or Ollama, and then query them using semantic search and vector search. Choose between one of the following options.
 
-4. Set up environment variables in .env
-   ```
-   cp env.example .env
-   ```
-   `OPENAI_API_KEY` is required. If you don't choose not to create the Weaviate Cluster, remove `WEAVIATE_CLUSTER_URL` and `WEAVIATE_API_KEY` from the `.env`.
+#### Data Pipeline Using Ollama (Option1)
 
-5. Set up a Python virtualenv to populate your vector database and to experiment with semantic search. 
-   ```
-   python3 -m venv venv 
-   source venv/bin/activate
-   pip install -r requirements.txt
-   python data-pipeline/populate.py # Will only work if you create your own cluster
-   python data-pipeline/search.py
-   ```
+If you're using Ollama with this project, follow the instructions found in the [ollama/README.md](./data-pipeline/ollama/README.md) to set up Ollama and Weaviate running locally. 
 
-6. Install dependencies
+#### Data Pipeline Using OpenAI (Option2)
+
+If you're using OpenAI with this project, make sure to create a Weaviate Cloud cluster in WCD and get an API key from OpenAI. There are instructions to get an API key from the official [OpenAI Docs](https://platform.openai.com/docs/api-reference/introduction). You'll also need to fund the account.
+
+Once you have the above dependencies sorted out, you can follow the instructions in the [openai/README.md](./data-pipeline/openai/README.md)
+
+### The Web Application
+
+Once you've set up Weaviate and understand how the data pipeline works you can move over to the BookRecs web application written in NextJS. 
+
+**Note**: The web application is configured only to use OpenAI and WCD as an introduction on how to leverage Weaviate. It can be modified to use Ollama and a locally running Weaviate instance, but this project won't do that ouf of the box.
+
+Additionally, this project has access to an existing WCD Cluster with an API Key configured to only allow READing from the public WCD cluster.
+
+Install dependencies
    ```
    cd bookrecs
    npm install
    ```
-7. Run the app
+Run the app
    ```
    npm run dev
    ```
-8. Try out BookRecs in a browser at http://localhost:3000
+Try out BookRecs in a browser at http://localhost:3000
 
 
 ## 🤝 Configuring Cohere Integration
@@ -105,14 +109,15 @@ The book data used for this project is sourced from the following Kaggle dataset
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Python Data Pipeline](https://python.org/)
+- [Weaviate >1.25](https://weaviate.io/)
 
 ## 🕷 Known Issues
 
 - Some book images are inaccessible due to dead links on the original data set
 
-## 💰 Large Language Model (LLM) Costs
+## 💰 Large Language Model (LLM) Costs with OpenAI
 
-BookRecs exclusively utilizes OpenAI models. Be advised that the usage costs for these models will be billed to the API access key you provide. Primarily, costs are incurred during data embedding and answer generation processes. The default vectorization engine for this project is `Ada v2`.
+BookRecs utilizes OpenAI or Ollama models. For OpenAI -- be advised that the usage costs for these models will be billed to the API access key you provide. Primarily, costs are incurred during data embedding and answer generation processes. The default vectorization engine for this project is `text-embedding-3-small`.
 
 ## 💖 Open Source Contribution
 

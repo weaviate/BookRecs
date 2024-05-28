@@ -1,28 +1,28 @@
 ## Accounts & Environments
 
-### Register on Weaviate Cloud Services (WCS)
-The first step is to register an account on Weaviate Cloud Services (WCS). If you already have an account, you can skip ahead to creating a dedicated cluster.
+### Register on Weaviate Cloud (WCD)
+The first step is to register an account on Weaviate Cloud (WCD). If you already have an account, you can skip ahead to creating a dedicated cluster.
 
-1. Open your browser and go to [Weaviate Cloud Services](https://console.weaviate.cloud/)
+1. Open your browser and go to [Weaviate Cloud](https://console.weaviate.cloud/)
 2. Register for an account. (Pause here and sign up for an account if you haven't already)
 
 ### Create a New Cluster
 Once you have an account, log in and create a new cluster.
 
-1. In the WCS console, click "Create cluster".
+1. In the WCD console, click "Create cluster".
 2. You can use a “Free sandbox”, or select Standard, Enterprise, or Business Critical for long-term use.
 3. Give your cluster a memorable name.
 4. Ensure “Enable Authentication” is set to “Yes”.
 5. Review the details and click “Create”.
 
-WCS will deploy your cluster and provide an endpoint where you can begin storing your embeddings.
+WCD will deploy your cluster and provide an endpoint where you can begin storing your embeddings.
 
 ### Note Cluster URL and API Key
-While still in WCS, take note of the Cluster URL and the API Key for your Weaviate instance.
+While still in WCD, take note of the Cluster URL and the API Key for your Weaviate instance.
 
 1. Click “Details” on the newly created cluster to expand the view.
 2. Copy the “Cluster URL” and save it in a text file for later reference.
-3. Go back to WCS, click API Keys, and copy the Admin key. Save this in the text file as well.
+3. Go back to WCD, click API Keys, and copy the Admin key. Save this in the text file as well.
 
 ### Get OpenAI API Key
 You will also need an API key from OpenAI to generate embeddings. If you already have a token, you can use it for this project.
