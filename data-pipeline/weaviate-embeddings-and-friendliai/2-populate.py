@@ -1,19 +1,20 @@
 import os
 import csv
 import weaviate
-import weaviate.classes as wvc
+from weaviate.classes.init import Auth
+
 
 WEAVIATE_CLUSTER_URL = os.getenv('WEAVIATE_CLUSTER_URL') or 'https://zxzyqcyksbw7ozpm5yowa.c0.us-west2.gcp.weaviate.cloud'
 WEAVIATE_API_KEY = os.getenv('WEAVIATE_API_KEY') or 'n6mdfI32xrXF3DH76i8Pwc2IajzLZop2igb6'
 
-client = weaviate.Client(
-    url=WEAVIATE_CLUSTER_URL,
-    auth_client_secret=weaviate.AuthApiKey(api_key=WEAVIATE_API_KEY)
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=WEAVIATE_CLUSTER_URL,
+    auth_credentials=Auth.api_key(WEAVIATE_API_KEY),
 )
 
 book_collection = client.collections.get(name="WeaviateEmbeddingBooks")
 
-f = open("./data-pipeline/7k-books-kaggle.csv", "r")
+f = open("../7k-books-kaggle.csv", "r")
 current_book = None
 try:
     reader = csv.reader(f)
